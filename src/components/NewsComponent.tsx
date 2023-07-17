@@ -1,27 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { faker } from '@faker-js/faker';
+import Search from './Search';
+import { NewsArticle, NewsData } from '../types';
+import NewsArticleItem from './NewsArticleItem';
 
-interface NewsArticle {
-  id: string;
-  story_date: string;
-  title: string;
-  excerpt: string;
-  story_content: string;
-  author: {
-    name: string;
-    email: string;
-    phone: string;
-  };
-  ratings: {
-    upvotes: number;
-    downvotes: number;
-    rating: number;
-  };
-}
-
-interface NewsData {
-  news: NewsArticle[];
-}
 
 const NewsComponent: React.FC = () => {
   const [newsData, setNewsData] = useState<NewsData>({ news: [] });
@@ -56,8 +38,8 @@ const NewsComponent: React.FC = () => {
 
     generateNewsData();
   }, []);
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
   };
 
   const filteredNews = newsData.news.filter((article) => {
@@ -73,26 +55,9 @@ const NewsComponent: React.FC = () => {
   return (
     <div>
       <h1>News Articles</h1>
-      <input
-        type="text"
-        placeholder="Search articles..."
-        value={searchQuery}
-        onChange={handleSearch}
-      />
+      <Search value={searchQuery} onChange={handleSearch} />
       {filteredNews.map((article) => (
-        <div key={article.id}>
-          <h2>{article.title}</h2>
-          <p>Date: {article.story_date}</p>
-          <p>{article.excerpt}</p>
-          <p>{article.story_content}</p>
-          <p>Author: {article.author.name}</p>
-          <p>Email: {article.author.email}</p>
-          <p>Phone: {article.author.phone}</p>
-          <p>Upvotes: {article.ratings.upvotes}</p>
-          <p>Downvotes: {article.ratings.downvotes}</p>
-          <p>Rating: {article.ratings.rating}</p>
-          <hr />
-        </div>
+        <NewsArticleItem key={article.id} article={article} />
       ))}
     </div>
   );
