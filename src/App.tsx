@@ -31,8 +31,6 @@ function App() {
                 </AuthDetails>
               }
             />
-
-            {/* <Route path='/users/:id' element={ <Home><NewsArticleDetails /></Home>} /> */}
           </Routes>
         </div>
       </Fragment>
