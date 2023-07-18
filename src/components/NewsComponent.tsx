@@ -26,7 +26,7 @@ const NewsComponent: React.FC = () => {
             story_date: faker.date.past().toISOString().split("T")[0],
             title: faker.lorem.sentence(),
             excerpt: faker.lorem.sentence(),
-            story_content: faker.lorem.paragraphs(),
+            story_content: faker.lorem.paragraphs(10),
             author: {
               name: faker.person.fullName(),
               email: faker.internet.email(),
