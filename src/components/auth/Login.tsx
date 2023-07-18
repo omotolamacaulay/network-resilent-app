@@ -1,10 +1,10 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-// import "../styles/login.scss";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -30,6 +30,7 @@ const Login = () => {
       .catch((err) => {
         console.log(err);
       });
+    navigate("/");
     console.log("Login Submitted");
   };
   return (
