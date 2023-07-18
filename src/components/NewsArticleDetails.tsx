@@ -14,28 +14,47 @@ export const NewsArticleDetails = () => {
   useEffect(() => {
     const articles = localStorage.getItem("articles") as string;
     if (articles) {
-      const data = JSON.parse(articles).news.find(
+      const parsedArticles = JSON.parse(articles);
+      const data = parsedArticles.news.find(
         (article: NewsArticle) => article.id === id
       );
       setSingleArticle(data);
       setUpvotes(data?.ratings.upvotes || 0);
       setDownVotes(data?.ratings.downvotes || 0);
+      const totalVotes = data?.ratings.upvotes + data?.ratings.downvotes;
+      const newAverage = ((data?.ratings.upvotes || 0) / totalVotes) * 5;
+      setNewAverageRating(newAverage);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+  useEffect(() => {
+    const articles = localStorage.getItem("articles") as string;
+    if (articles) {
+      const parsedArticles = JSON.parse(articles);
+      const updatedArticles = parsedArticles.news.map(
+        (article: NewsArticle) => {
+          if (article.id === id) {
+            article.ratings.upvotes = upVotes;
+            article.ratings.downvotes = downVotes;
+          }
+          return article;
+        }
+      );
+      parsedArticles.news = updatedArticles;
+      localStorage.setItem("articles", JSON.stringify(parsedArticles));
+      const totalVotes = upVotes + downVotes;
+      const newAverage = (upVotes / totalVotes) * 5;
+      setNewAverageRating(newAverage);
+    }
+  }, [id, upVotes, downVotes]);
+
   const handleUpvote = () => {
     setUpvotes((prevUpvotes) => prevUpvotes + 1);
-    const totalVotes = upVotes + downVotes + 1;
-    const newAverage = ((upVotes + 1) / totalVotes) * 5;
-    setNewAverageRating(newAverage);
   };
 
   const handleDownvote = () => {
     setDownVotes((prevDownvotes) => prevDownvotes + 1);
-    const totalVotes = upVotes + downVotes + 1;
-    const newAverage = (upVotes / totalVotes) * 5;
-    setNewAverageRating(newAverage);
   };
 
   return (
