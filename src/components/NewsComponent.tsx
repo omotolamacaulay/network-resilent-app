@@ -42,8 +42,8 @@ const NewsComponent: React.FC = () => {
           data.news.push(newsArticle);
         }
 
-        console.log(data.news);
         setNewsData(data);
+        localStorage.setItem("articles", JSON.stringify(data));
         // const items = data.news
         // const endOffset = itemOffset + itemsPerPage;
         // setNewsData(items.slice(itemOffset, endOffset));
