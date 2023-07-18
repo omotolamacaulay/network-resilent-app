@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { NewsArticleDetails } from "./components/NewsArticleDetails";
 import NewsComponent from "./components/NewsComponent";
+import Login from "./components/auth/Login";
+import SignUp from "./components/auth/SignUp";
+import AuthDetails from "./components/AuthDetails";
 
 function App() {
   return (
@@ -10,9 +13,24 @@ function App() {
       <Fragment>
         <div className="App">
           <Routes>
-            {/* <Route path='/login' element={<Login />} /> */}
-            <Route path="/" element={<NewsComponent />} />
-            <Route path="/articles/:id" element={<NewsArticleDetails />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route
+              path="/"
+              element={
+                <AuthDetails>
+                  <NewsComponent />
+                </AuthDetails>
+              }
+            />
+            <Route
+              path="/articles/:id"
+              element={
+                <AuthDetails>
+                  <NewsArticleDetails />
+                </AuthDetails>
+              }
+            />
 
             {/* <Route path='/users/:id' element={ <Home><NewsArticleDetails /></Home>} /> */}
           </Routes>
