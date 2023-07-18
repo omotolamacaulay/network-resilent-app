@@ -1,12 +1,24 @@
-import React from 'react';
-import './App.css';
-import NewsComponent from './components/NewsComponent';
+import { Fragment } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "./App.css";
+import { NewsArticleDetails } from "./components/NewsArticleDetails";
+import NewsComponent from "./components/NewsComponent";
 
 function App() {
   return (
-    <div className="App">
-      <NewsComponent />
-    </div>
+    <Router>
+      <Fragment>
+        <div className="App">
+          <Routes>
+            {/* <Route path='/login' element={<Login />} /> */}
+            <Route path="/" element={<NewsComponent />} />
+            <Route path="/articles/:id" element={<NewsArticleDetails />} />
+
+            {/* <Route path='/users/:id' element={ <Home><NewsArticleDetails /></Home>} /> */}
+          </Routes>
+        </div>
+      </Fragment>
+    </Router>
   );
 }
 
