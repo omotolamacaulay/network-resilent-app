@@ -13,7 +13,7 @@ const Search: React.FC<SearchProps> = ({ value, onChange }) => {
   return (
     <input
       type="text"
-      placeholder="Search articles..."
+      placeholder="Search articles by name, author or email"
       value={value}
       onChange={handleInputChange}
     />
