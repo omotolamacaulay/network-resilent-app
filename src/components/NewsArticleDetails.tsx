@@ -25,7 +25,6 @@ export const NewsArticleDetails = () => {
       const newAverage = ((data?.ratings.upvotes || 0) / totalVotes) * 5;
       setNewAverageRating(newAverage);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {
