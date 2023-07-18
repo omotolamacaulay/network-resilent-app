@@ -1,19 +1,21 @@
+import React from "react";
 import { NewsArticle } from "../types";
+import NewsArticleDetails from "./SingleArticle";
+import { Link } from "react-router-dom";
 
-const NewsArticleItem: React.FC<{ article: NewsArticle }> = ({ article }) => (
+interface SingleArticlePageProps {
+  article: NewsArticle;
+}
+
+const NewsArticleItem: React.FC<SingleArticlePageProps> = ({ article }) => {
+  return (
     <div>
-      <h2>{article.title}</h2>
-      <p>Date: {article.story_date}</p>
-      <p>{article.excerpt}</p>
-      <p>{article.story_content}</p>
-      <p>Author: {article.author.name}</p>
-      <p>Email: {article.author.email}</p>
-      <p>Phone: {article.author.phone}</p>
-      <p>Upvotes: {article.ratings.upvotes}</p>
-      <p>Downvotes: {article.ratings.downvotes}</p>
-      <p>Rating: {article.ratings.rating}</p>
-      <hr />
+      <h1>Article Details</h1>
+      <Link to={`/articles/${article.id}`}>
+        <NewsArticleDetails article={article} />
+      </Link>
     </div>
   );
+};
 
-  export default NewsArticleItem
+export default NewsArticleItem;
