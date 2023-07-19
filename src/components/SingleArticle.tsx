@@ -1,8 +1,19 @@
 import { NewsArticle } from "../types";
 import { UpVote } from "../assets";
 import { DownVote } from "../assets";
+import React from "react";
 
-const SingleArticle: React.FC<{ article: NewsArticle }> = ({ article }) => (
+interface SingleArticleProps {
+  article: NewsArticle;
+  isFavorite: boolean;
+  toggleFavorite: (articleId: string) => void;
+}
+
+const SingleArticle: React.FC<SingleArticleProps> = ({
+  article,
+  isFavorite,
+  toggleFavorite,
+}) => (
   <div className="card">
     <h2 className="article-title">{article.title}</h2>
     <p>{article.story_date}</p>
@@ -19,6 +30,10 @@ const SingleArticle: React.FC<{ article: NewsArticle }> = ({ article }) => (
       <img src={DownVote()} alt="" />: {article.ratings.downvotes}
     </span>
     <p>Rating: {article.ratings.rating}</p>
+
+    <button onClick={() => toggleFavorite(article.id)}>
+      {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+    </button>
   </div>
 );
 
