@@ -20,7 +20,6 @@ const NewsArticleItem: React.FC<NewsArticleItemProps> = ({
       <h2 className="article-title">{article.title}</h2>
       <p>{article.story_date}</p>
       <p>{article.excerpt}</p>
-      {/* <p>{article.story_content}</p> */}
       <p>Author: {article.author.name}</p>
       <p>{article.author.email}</p>
       <p>{article.author.phone}</p>
