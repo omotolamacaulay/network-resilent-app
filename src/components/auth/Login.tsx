@@ -1,7 +1,8 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
+import "../../App.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,11 +38,13 @@ const Login = () => {
     <div className="login">
       <div className="login__grid">
         <div className="login__form">
-          <h1>Welcome!</h1>
-          <p>Enter details to login.</p>
+          <h1 className="login-h1">Welcome!</h1>
+          <p className="login-p">Enter details to login.</p>
           <form onSubmit={(e) => onSubmit(e)}>
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label className="label" htmlFor="email">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -52,7 +55,9 @@ const Login = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label className="label" htmlFor="password">
+                Password
+              </label>
               <input
                 type={inputType}
                 name="password"
@@ -61,16 +66,19 @@ const Login = () => {
                 value={password}
                 onChange={onChange}
               />
-              <small onClick={togglePassword}>
+              <small className="small" onClick={togglePassword}>
                 {inputType === "password" ? "Show" : "Hide"}
               </small>
             </div>
-            <span>Forgot PASSWORD?</span>
-            <div>Don't have an account?</div>
-            <Link to="/signup" className="submit">
-              Sign up
-            </Link>
-            <button type="submit">Login</button>
+            <div className="alternateCTA">
+              Don't have an account?
+              <Link to="/signup" className="">
+                Sign up
+              </Link>
+            </div>
+            <button className="submit" type="submit">
+              Login
+            </button>
           </form>
         </div>
       </div>
