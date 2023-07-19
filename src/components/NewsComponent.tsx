@@ -81,9 +81,11 @@ const NewsComponent: React.FC = () => {
     <div>
       <h1>News Articles</h1>
       <Search value={searchQuery} onChange={handleSearch} />
-      {filteredNews.map((article) => (
-        <NewsArticleItem key={article.id} article={article} />
-      ))}
+      <div className="card-group">
+        {filteredNews.map((article) => (
+          <NewsArticleItem key={article.id} article={article} />
+        ))}
+      </div>
       {/* <div className="pagination_wrapper">
         <ReactPaginate
           nextLabel=">"

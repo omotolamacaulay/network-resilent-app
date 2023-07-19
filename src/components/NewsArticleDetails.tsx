@@ -57,34 +57,51 @@ export const NewsArticleDetails = () => {
   };
 
   return (
-    <div>
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Back to home
-      </button>
+    <div className="singleArticle">
+      <div>
+        <button
+          onClick={() => {
+            navigate("/");
+          }}
+          className="back-to-articles"
+        >
+          Back to Articles
+        </button>
+      </div>
+      <h1>Article Details</h1>
       {singleArticle && (
-        <div>
-          <h2>{singleArticle.title}</h2>
-          <p>Date: {singleArticle.story_date}</p>
-          <p>{singleArticle.excerpt}</p>
-          <p>{singleArticle.story_content}</p>
-          <p>Author: {singleArticle.author.name}</p>
-          <p>Email: {singleArticle.author.email}</p>
-          <p>Phone: {singleArticle.author.phone}</p>
-          <Rating
-            article={singleArticle}
-            onUpvote={handleUpvote}
-            onDownvote={handleDownvote}
-          />
-          <p>Upvotes: {upVotes}</p>
-          <p>Downvotes: {downVotes}</p>
-          {newAverageRating !== null && (
-            <p>New Average Rating: {newAverageRating.toFixed(2)}</p>
-          )}
-          <hr />
+        <div className="singleArticle-body">
+          <div className="singleArticle-content">
+            <h2 className="singleArticle-title">{singleArticle.title}</h2>
+            <p className="singleArticle-story">{singleArticle.excerpt}</p>
+            <p className="singleArticle-story">{singleArticle.story_content}</p>
+          </div>
+          <div className="singleArticle-info">
+            <p className="singleArticle-info__text">
+              {singleArticle.story_date}
+            </p>
+            <p className="singleArticle-info__text">
+              By {singleArticle.author.name}
+            </p>
+            <p className="singleArticle-info__text">
+              {singleArticle.author.email}
+            </p>
+            <p className="singleArticle-info__text">
+              {singleArticle.author.phone}
+            </p>
+            <Rating
+              article={singleArticle}
+              onUpvote={handleUpvote}
+              onDownvote={handleDownvote}
+            />
+            {newAverageRating !== null && (
+              <p className="singleArticle-info__text">
+                Average Rating: {newAverageRating.toFixed(2)}
+              </p>
+            )}
+            <p className="singleArticle-info__text">Upvotes: {upVotes}</p>
+            <p className="singleArticle-info__text">Downvotes: {downVotes}</p>
+          </div>
         </div>
       )}
     </div>

@@ -28,10 +28,12 @@ const AuthDetails = ({ children }: { children: React.ReactElement }) => {
   };
 
   return (
-    <div>
+    <div className="body">
       {authUser ? (
         <div>
-          <button onClick={userSignOut}>Signout</button>
+          <button className="signout" onClick={userSignOut}>
+            Sign Out
+          </button>
           {children}
         </div>
       ) : (

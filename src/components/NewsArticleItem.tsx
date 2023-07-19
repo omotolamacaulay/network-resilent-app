@@ -1,6 +1,6 @@
 import React from "react";
 import { NewsArticle } from "../types";
-import NewsArticleDetails from "./SingleArticle";
+import SingleArticle from "./SingleArticle";
 import { Link } from "react-router-dom";
 
 interface SingleArticlePageProps {
@@ -10,9 +10,8 @@ interface SingleArticlePageProps {
 const NewsArticleItem: React.FC<SingleArticlePageProps> = ({ article }) => {
   return (
     <div>
-      <h1>Article Details</h1>
-      <Link to={`/articles/${article.id}`}>
-        <NewsArticleDetails article={article} />
+      <Link className="article-link" to={`/articles/${article.id}`}>
+        <SingleArticle article={article} />
       </Link>
     </div>
   );

@@ -1,8 +1,9 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 // import "../styles/login.scss";
 import { auth } from "../../firebase";
+import "../../App.css";
 
 const SignUp = () => {
   const [user, setUser] = useState({
@@ -35,11 +36,13 @@ const SignUp = () => {
     <div className="login">
       <div className="login__grid">
         <div className="login__form">
-          <h1>Welcome!</h1>
-          <p>Enter details to SignUp.</p>
+          <h1 className="login-h1">Welcome!</h1>
+          <p className="login-p">Enter details to Sign Up.</p>
           <form onSubmit={(e) => onSubmit(e)}>
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label className="label" htmlFor="email">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -50,7 +53,9 @@ const SignUp = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label className="label" htmlFor="password">
+                Password
+              </label>
               <input
                 type={inputType}
                 name="password"
@@ -59,18 +64,19 @@ const SignUp = () => {
                 value={password}
                 onChange={onChange}
               />
-              <small onClick={togglePassword}>
+              <small className="small" onClick={togglePassword}>
                 {inputType === "password" ? "Show" : "Hide"}
               </small>
             </div>
-            <span>Forgot PASSWORD?</span>
-            <div>
+            <div className="alternateCTA">
               Already have an account?
-              <Link to="/login" className="submit">
+              <Link to="/login" className="">
                 Log in
               </Link>
             </div>
-            <button type="submit">signup</button>
+            <button className="submit" type="submit">
+              Sign up
+            </button>
           </form>
         </div>
       </div>
