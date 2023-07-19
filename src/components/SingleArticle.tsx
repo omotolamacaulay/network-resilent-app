@@ -1,19 +1,24 @@
 import { NewsArticle } from "../types";
+import { UpVote } from "../assets";
+import { DownVote } from "../assets";
 
 const SingleArticle: React.FC<{ article: NewsArticle }> = ({ article }) => (
-  <div>
-    <h2>{article.title}</h2>
-    <p>Date: {article.story_date}</p>
+  <div className="card">
+    <h2 className="article-title">{article.title}</h2>
+    <p>{article.story_date}</p>
     <p>{article.excerpt}</p>
-    <p>{article.story_content}</p>
+    {/* <p>{article.story_content}</p> */}
     <p>Author: {article.author.name}</p>
-    <p>Email: {article.author.email}</p>
-    <p>Phone: {article.author.phone}</p>
-    <p>Upvotes: {article.ratings.upvotes}</p>
-    <p>Downvotes: {article.ratings.downvotes}</p>
-    <p>Rating: {article.ratings.rating}</p>
+    <p>{article.author.email}</p>
+    <p>{article.author.phone}</p>
 
-    <hr />
+    <span>
+      <img src={UpVote()} alt="" />: {article.ratings.upvotes}
+    </span>
+    <span>
+      <img src={DownVote()} alt="" />: {article.ratings.downvotes}
+    </span>
+    <p>Rating: {article.ratings.rating}</p>
   </div>
 );
 
