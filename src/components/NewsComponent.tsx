@@ -3,21 +3,30 @@ import { faker } from "@faker-js/faker";
 import Search from "./Search";
 import { NewsArticle, NewsData } from "../types";
 import NewsArticleItem from "./NewsArticleItem";
-// import ReactPaginate from "react-paginate";
+import ReactPaginate from "react-paginate";
 
 const NewsComponent: React.FC = () => {
   const [newsData, setNewsData] = useState<NewsData>({ news: [] });
   const [searchQuery, setSearchQuery] = useState<string>("");
-  // const [pageCount, setPageCount] = useState(0);
-  // const [itemOffset, setItemOffset] = useState(0);
-  // const [itemsPerPage, setItemsPerPage] = useState(10);
-
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [showFavorites, setShowFavorites] = useState<boolean>(false);
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+  const [itemsPerPage] = useState(12);
+  const [getFilteredArticles, setGetFilteredArticles] = useState<NewsArticle[]>(
+    []
+  );
   useEffect(() => {
     const generateNewsData = () => {
       const storedArticles = localStorage.getItem("articles");
+      const storedFavorites = localStorage.getItem("favorites");
       if (storedArticles) {
         const parsedArticles: NewsData = JSON.parse(storedArticles);
         setNewsData(parsedArticles);
+        if (storedFavorites) {
+          const parsedFavorites: string[] = JSON.parse(storedFavorites);
+          setFavorites(parsedFavorites);
+        }
       } else {
         const data: NewsData = { news: [] };
         for (let i = 1; i <= 125; i++) {
@@ -44,10 +53,6 @@ const NewsComponent: React.FC = () => {
 
         setNewsData(data);
         localStorage.setItem("articles", JSON.stringify(data));
-        // const items = data.news
-        // const endOffset = itemOffset + itemsPerPage;
-        // setNewsData(items.slice(itemOffset, endOffset));
-        // setPageCount(Math.ceil(newsData.news.length / itemsPerPage));
       }
     };
 
@@ -55,38 +60,81 @@ const NewsComponent: React.FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // const handlePageClick = (event: any) => {
-  //   const newOffset = (event.selected * itemsPerPage) % newsData.news.length;
-  //   setItemOffset(newOffset);
-  // };
+  const handlePageClick = (event: any) => {
+    const newOffset = (event.selected * itemsPerPage) % newsData.news.length;
+    setItemOffset(newOffset);
+  };
   const handleSearch = (value: string) => {
     setSearchQuery(value);
   };
 
-  const filteredNews = newsData.news.filter((article) => {
-    const { title, author } = article;
-    const { name, email } = author;
-    const searchLowercase = searchQuery.toLowerCase();
-    return (
-      title.toLowerCase().includes(searchLowercase) ||
-      name.toLowerCase().includes(searchLowercase) ||
-      email.toLowerCase().includes(searchLowercase)
-    );
-  });
-  // const selectPageCount = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setItemsPerPage(+e.currentTarget.value);
-  // };
+  const toggleFavorite = (articleId: string) => {
+    setFavorites((prevFavorites) => {
+      let favArray: string[] = [];
+      const isFavorite = prevFavorites.includes(articleId);
+      if (isFavorite) {
+        favArray = prevFavorites.filter((id) => id !== articleId);
+      } else {
+        favArray = [...prevFavorites, articleId];
+      }
+      localStorage.setItem("favorites", JSON.stringify(favArray));
+      return favArray;
+    });
+  };
+
+  const isFavorite = (articleId: string) => {
+    return favorites.includes(articleId);
+  };
+  useEffect(() => {
+    let filteredNews: NewsArticle[] = [];
+    if (showFavorites) {
+      filteredNews = newsData.news.filter((article) =>
+        favorites.includes(article.id)
+      );
+    } else {
+      filteredNews = newsData.news.filter((article) => {
+        const { title, author } = article;
+        const { name, email } = author;
+        const searchLowercase = searchQuery.toLowerCase();
+
+        return (
+          title.toLowerCase().includes(searchLowercase) ||
+          name.toLowerCase().includes(searchLowercase) ||
+          email.toLowerCase().includes(searchLowercase)
+        );
+      });
+    }
+
+    const endOffset = itemOffset + itemsPerPage;
+    setGetFilteredArticles(filteredNews.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(newsData.news.length / itemsPerPage));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, newsData, itemOffset, itemsPerPage, showFavorites]);
+
   return (
     <div>
       <h1>News Articles</h1>
       <Search value={searchQuery} onChange={handleSearch} />
+      <div>
+        <button
+          className="showFavorites"
+          onClick={() => setShowFavorites(!showFavorites)}
+        >
+          {showFavorites ? "Show All Articles" : "Show Favorites"}
+        </button>
+      </div>
       <div className="card-group">
-        {filteredNews.map((article) => (
-          <NewsArticleItem key={article.id} article={article} />
+        {getFilteredArticles.map((article) => (
+          <NewsArticleItem
+            key={article.id}
+            article={article}
+            isFavorite={isFavorite(article.id)}
+            toggleFavorite={toggleFavorite}
+          />
         ))}
       </div>
-      {/* <div className="pagination_wrapper">
+
+      <div className="pagination_wrapper">
         <ReactPaginate
           nextLabel=">"
           onPageChange={handlePageClick}
@@ -107,32 +155,7 @@ const NewsComponent: React.FC = () => {
           activeClassName="active"
           renderOnZeroPageCount={null}
         />
-
-        {filteredNews.length > 0 && (
-          <div className="select-box">
-            <span>
-              Showing out
-              <span>
-                <label htmlFor="pageitems" hidden></label>
-                <select
-                  className="pageitems"
-                  name="page Items"
-                  id="pageitems"
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                    selectPageCount(e)
-                  }
-                >
-                  <option value="10">{itemsPerPage}</option>
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-              </span>
-              of {filteredNews.length}
-            </span>
-          </div>
-        )}
-      </div> */}
+      </div>
     </div>
   );
 };
