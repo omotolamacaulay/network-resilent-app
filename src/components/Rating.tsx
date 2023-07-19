@@ -17,8 +17,12 @@ const Rating: React.FC<RatingProps> = ({ article, onUpvote, onDownvote }) => {
 
   return (
     <div>
-      <button onClick={handleUpvote}>Upvote</button>
-      <button onClick={handleDownvote}>Downvote</button>
+      <button className="vote" onClick={handleUpvote}>
+        Upvote
+      </button>
+      <button className="vote" onClick={handleDownvote}>
+        Downvote
+      </button>
     </div>
   );
 };

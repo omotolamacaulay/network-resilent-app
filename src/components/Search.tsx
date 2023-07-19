@@ -14,6 +14,7 @@ const Search: React.FC<SearchProps> = ({ value, onChange }) => {
     <input
       type="text"
       placeholder="Search articles by name, author or email"
+      className="search"
       value={value}
       onChange={handleInputChange}
     />
