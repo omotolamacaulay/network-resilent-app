@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-// import "../styles/login.scss";
+import { Alert } from "antd";
 import { auth } from "../../firebase";
 import "../../App.css";
 
@@ -12,6 +12,8 @@ const SignUp = () => {
   });
   const { email, password } = user;
   const [inputType, setInputType] = useState("password");
+  const [loginError, setLoginError] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
   const togglePassword = () => {
     if (inputType === "password") {
       setInputType("text");
@@ -26,10 +28,16 @@ const SignUp = () => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log(userCredential);
+        setShowAlert(true);
+        setLoginError("");
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 2000);
       })
       .catch((err) => {
         console.log(err);
+        setShowAlert(true);
+        setLoginError("Sign up failed. Please check your email and password.");
       });
   };
   return (
@@ -38,6 +46,14 @@ const SignUp = () => {
         <div className="login__form">
           <h1 className="login-h1">Welcome!</h1>
           <p className="login-p">Enter details to Sign Up.</p>
+          {showAlert && (
+            <Alert
+              message={loginError ? "Error" : "Success"}
+              description={loginError || "Login successful!"}
+              type={loginError ? "error" : "success"}
+              closable
+            />
+          )}
           <form onSubmit={(e) => onSubmit(e)}>
             <div className="form-group">
               <label className="label" htmlFor="email">
